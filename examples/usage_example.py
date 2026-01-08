@@ -64,9 +64,18 @@ for imdb_id in movies_list:
     print(f"Genres: {', '.join(movie.genres) if movie.genres else 'N/A'}")
     print(f"Languages: {', '.join(movie.languages) if movie.languages else 'N/A'}")
     print(f"Country Codes: {', '.join(movie.country_codes) if movie.country_codes else 'N/A'}")
+    print(f"Stars:")
+    for star in movie.stars:
+        print(f"  - {star.name} ({star.imdbId})")
     print("Directors:")
     for director in movie.directors:
         print(f"  - {director.name} ({director.imdbId})")
+    if movie.is_series():
+        print("Series Creators:")
+        for creator in movie.info_series.creators:
+            print(f"  - {creator.name} ({creator.imdbId})")
+    if movie.is_episode():
+        print(f"Episode Info: {movie.info_episode or 'N/A'}")
     print("Cast:")
     for cast_member in movie.categories['cast'][:3]:  # Limit to the first 3 cast members for brevity
         print(f"  - {cast_member.name} ({cast_member.imdbId})")
