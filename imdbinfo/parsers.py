@@ -237,7 +237,7 @@ def _parse_principal_credits_v2_stars(principal_credits_groups) -> List[Person]:
     stars: List[Person] = []
     for group in principal_credits_groups:
         if group.get("grouping", {}).get("text") == "Stars":
-            for credit in group.get("credits", []):
+            for credit in (group.get("credits") or []):
                 stars.append(Person.from_cast(credit))
     return stars
 
