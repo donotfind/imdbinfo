@@ -216,3 +216,33 @@ def test_parse_awards_with_partial_prestigious_award_none():
     assert awards.wins == 1
     assert awards.nominations == 2
     assert "prestigious_award" not in awards
+
+
+def test_parse_principal_credits_v2_stars_with_none_credits():
+    """Test that _parse_principal_credits_v2_stars handles None credits gracefully.
+
+    This reproduces a bug where movies with incomplete cast data (credits=None)
+    would cause a TypeError: 'NoneType' object is not iterable.
+    See: https://www.imdb.com/title/tt28629017/
+    """
+    # Case 1: credits is explicitly None
+    data_with_none_credits = [
+        {'grouping': {'text': 'Stars'}, 'credits': None}
+    ]
+    result = parsers._parse_principal_credits_v2_stars(data_with_none_credits)
+    assert result == []
+
+    # Case 2: credits key is missing entirely
+    data_without_credits = [
+        {'grouping': {'text': 'Stars'}}
+    ]
+    result = parsers._parse_principal_credits_v2_stars(data_without_credits)
+    assert result == []
+
+    # Case 3: entire input is None
+    result = parsers._parse_principal_credits_v2_stars(None)
+    assert result == []
+
+    # Case 4: empty list
+    result = parsers._parse_principal_credits_v2_stars([])
+    assert result == []
