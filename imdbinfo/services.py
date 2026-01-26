@@ -102,7 +102,7 @@ def request_json_url(url: str) -> Any:
     return raw_json
 
 
-def method_name(headers, imdbId, payload, url) -> Any:
+def request_graphql_url(headers, imdbId, payload, url) -> Any:
     resp = niquests.post(url, headers=headers, json=payload)
     if resp.status_code != 200:
         logger.error("GraphQL request failed: %s", resp.status_code)
@@ -383,7 +383,7 @@ def _get_extended_title_info(imdb_id) -> dict:
     )
     payload = {"query": query}
     logger.info("Fetching title %s from GraphQL API", imdb_id)
-    data = method_name(headers, imdbId, payload, url)
+    data = request_graphql_url(headers, imdbId, payload, url)
     raw_json = data.get("data", {}).get("title", {})
     return raw_json
 
@@ -513,6 +513,6 @@ def _get_extended_name_info(person_id) -> dict:
     }
     payload = {"query": query}
     logger.info("Fetching person %s from GraphQL API", person_id)
-    data = method_name(headers, person_id, payload, url)
+    data = request_graphql_url(headers, person_id, payload, url)
     raw_json = data.get("data", {}).get("name", {})
     return raw_json

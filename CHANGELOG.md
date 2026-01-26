@@ -160,3 +160,5 @@
 ## v0.6.7
 - Fix bug in directors parsing: handle locales in Directors Parsing, using objectId instead of Label name
 
+## v0.7.0
+- Deprecating python support for versions below 3.10. Not effective but will be in future releases, we will use features only available in 3.10+.
